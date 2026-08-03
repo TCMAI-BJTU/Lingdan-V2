@@ -2,122 +2,140 @@
   <img width="420" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/logo.png" alt="Lingdan-V2 logo" />
 </p>
 
-<h1 align="center">Lingdan-V2</h1>
+<p align="center"><strong>Lingdan-V2: Large Language Models for Clinically Grounded Reasoning in Traditional Chinese Medicine</strong></p>
 
-<p align="center"><strong>Large language models for clinically grounded reasoning in traditional Chinese medicine</strong></p>
-
-<p align="center">面向中医知识理解、临床推理与处方推荐的多规模大语言模型系列</p>
+<p align="center">A multi-scale family of language models for TCM knowledge comprehension, clinical reasoning, and prescription recommendation</p>
 
 <p align="center">
   <a href="https://modelscope.cn/organization/TCMAIBJTU"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
+  <a href="https://tcmai.chat/"><img src="https://img.shields.io/badge/Online_Demo-tcmai.chat-F28C28" alt="Lingdan-V2 online demo" /></a>
   <a href="https://github.com/TCMAI-BJTU/LingLan"><img src="https://img.shields.io/badge/Benchmark-LingLan-2A8F5B" alt="LingLan benchmark" /></a>
   <img src="https://img.shields.io/badge/Model_scales-4B_%7C_8B_%7C_14B-0B5394" alt="Model scales: 4B, 8B, and 14B" />
+  <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
 </p>
 
 <p align="center">
-  <a href="#项目简介">项目简介</a> ·
-  <a href="#模型下载">模型下载</a> ·
-  <a href="#研究设计">研究设计</a> ·
-  <a href="#主要结果">主要结果</a> ·
-  <a href="#数据隐私与使用边界">使用边界</a>
+  <a href="#overview">Overview</a> ·
+  <a href="#model-zoo">Model Zoo</a> ·
+  <a href="#study-design">Study Design</a> ·
+  <a href="#main-results">Main Results</a> ·
+  <a href="#data-privacy-and-responsible-use">Responsible Use</a> ·
+  <a href="#license">License</a>
 </p>
 
-## 项目简介
+## Overview
 
-传统中医临床决策需要同时整合领域知识、症状表现、证候辨识、治法选择、方药组成与剂量信息。通用大语言模型虽然具备较强的语言理解能力，但在中医专业知识适配、复杂诊疗推理和结构化处方生成方面仍面临挑战。
+Clinical decision-making in traditional Chinese medicine (TCM) requires the joint integration of domain knowledge, symptom presentations, syndrome differentiation, treatment principle selection, herbal prescription composition, and dosage information. Although general-purpose large language models demonstrate strong language understanding capabilities, they remain limited in their adaptation to specialized TCM knowledge, complex diagnostic-therapeutic reasoning, and structured prescription generation.
 
-Lingdan-V2 是基于 Qwen3 系列基座模型构建的中医大语言模型家族，覆盖 4B、8B 和 14B 三种参数规模。模型通过中医领域持续预训练（CPT）、推理导向的监督微调（SFT）和处方导向的群组相对策略优化（GRPO）逐步获得领域知识、任务执行、结构化推理与处方决策能力。其中，Lingdan-14B-R1 是本文重点研究的模型，4B 和 8B 系列用于分析模型规模及处方导向后训练的影响。
+Lingdan-V2 is a family of TCM large language models developed from Qwen3 backbone models at three parameter scales: 4B, 8B, and 14B. Through TCM-domain continued pretraining (CPT), reasoning-oriented supervised fine-tuning (SFT), and prescription-centered Group Relative Policy Optimization (GRPO), the models progressively acquire domain knowledge, task execution capabilities, structured reasoning, and prescription decision-making abilities. Lingdan-14B-R1 is the primary model investigated in this study, while the 4B and 8B series provide complementary evidence regarding the effects of model scale and prescription-centered post-training.
 
-| 模型家族 | CPT 语料 | SFT 语料 | GRPO 数据 | 评测规模 |
+| Model family | CPT corpus | SFT corpus | GRPO data | Evaluation scale |
 | --- | ---: | ---: | ---: | ---: |
-| 4B、8B、14B × Base、SFT、R1 | 16.62B tokens | 7.73M samples / 2.08B tokens | 24,212 source prompts | LingLan 25,624 items / 私有临床 4,348 cases |
+| 4B, 8B, and 14B × Base, SFT, and R1 | 16.62B tokens | 7.73M samples / 2.08B tokens | 24,212 Samples | LingLan: 25,624 items / Private clinical set: 4,348 cases |
 
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overview.png" alt="Overview of Lingdan-V2 development and evaluation" />
 </p>
-<p align="center"><sub>图 1. Lingdan-V2 的数据基础、分阶段训练流程和评测设置。</sub></p>
+<p align="center"><sub>Figure 1. Data foundation, staged training pipeline, and evaluation settings of Lingdan-V2.</sub></p>
 
-## 核心贡献
+## Key Contributions
 
-- **多规模中医模型家族**：构建 4B、8B 和 14B 三种参数规模的 Base、SFT 与 R1 模型，支持领域研究、指令任务和中医临床推理等不同需求。
-- **分阶段能力形成路径**：将大规模中医领域知识注入、推理导向监督学习和处方导向强化后训练整合到统一流程中。
-- **面向中医临床推理的系统评测**：在 LingLan、LingLan-Hard 以及私有脾胃病处方评测集上，分别考察中医知识、信息抽取、诊疗推理、决策识别、处方组成和剂量一致性。
+- **A multi-scale family of TCM language models:** We develop Base, SFT, and R1 models at the 4B, 8B, and 14B parameter scales to support domain research, instruction-following tasks, and TCM clinical reasoning.
+- **A staged pathway for capability development:** We integrate large-scale TCM knowledge acquisition, reasoning-oriented supervised learning, and prescription-centered reinforcement post-training within a unified framework.
+- **A systematic evaluation of TCM clinical reasoning:** We evaluate TCM knowledge, information extraction, diagnostic-therapeutic reasoning, decision recognition, prescription composition, and dosage agreement on LingLan, LingLan-Hard, and a private prescription dataset for spleen and stomach disorders.
 
-## 模型下载
+## Model Zoo
 
-全部模型通过 ModelScope 发布。模型名称统一采用 `Lingdan-{规模}-{阶段}` 格式。
+All models are released on ModelScope. Model names follow the unified format `Lingdan-{Scale}-{Stage}`.
 
-| 模型规模 | Base | SFT | R1 |
+| Model scale | Base | SFT | R1 |
 | --- | --- | --- | --- |
 | 4B | [Lingdan-4B-Base](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-Base) | [Lingdan-4B-SFT](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-SFT) | [Lingdan-4B-R1](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-R1) |
 | 8B | [Lingdan-8B-Base](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-Base) | [Lingdan-8B-SFT](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-SFT) | [Lingdan-8B-R1](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-R1) |
 | 14B | [Lingdan-14B-Base](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-Base) | [Lingdan-14B-SFT](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-SFT) | [Lingdan-14B-R1](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-R1) |
 
-- **Base**：经过中医领域持续预训练，适合进一步微调和领域研究。
-- **SFT**：在 Base 模型上进行监督微调，适合中医知识问答、信息抽取和一般诊疗指令任务。
-- **R1**：在 SFT 模型上进行处方导向 GRPO 对齐，重点增强结构化临床推理和处方推荐能力。
+- **Base:** Continued pretrained models for further fine-tuning and domain-specific research.
+- **SFT:** Models obtained by supervised fine-tuning of the Base checkpoints for TCM question answering, information extraction, and general diagnostic and therapeutic instruction-following tasks.
+- **R1:** Models aligned from the SFT checkpoints through prescription-centered GRPO, with an emphasis on structured clinical reasoning and prescription recommendation.
 
-## 研究设计
+## Study Design
 
-### 数据基础与分阶段训练
+### Data Foundation and Staged Training
 
-1. **持续预训练（CPT）**：使用 16.62B tokens 的中医与临床相关语料，涵盖临床数据、中医古籍与现代书籍、结构化知识、公开医学数据和通用语料，形成 Lingdan-Base 模型。
-2. **监督微调（SFT）**：使用 7,729,982 个样本和 2.08B tokens，覆盖中医知识问答、信息抽取、诊疗推理、临床案例和处方生成等任务，形成 Lingdan-SFT 模型。
-3. **处方导向 GRPO**：以 24,212 个临床处方生成提示构成的源数据池为基础，以处方组成一致性为主要优化目标，形成 Lingdan-R1 模型。
+1. **Continued pretraining (CPT):** Lingdan-Base models are trained on 16.62B tokens of TCM and clinically relevant text, including clinical data, classical and modern TCM literature, structured knowledge, public medical data, and general-domain corpora.
+2. **Supervised fine-tuning (SFT):** Lingdan-SFT models are trained on 7,729,982 samples comprising 2.08B tokens. The tasks include TCM question answering, information extraction, diagnostic-therapeutic reasoning, clinical cases, and prescription generation.
+3. **Prescription-centered GRPO:** Lingdan-R1 models are trained on 24,212 Samples, with prescription composition agreement serving as the primary optimization objective.
 
-### 评测设置
+### Evaluation Settings
 
-- **LingLan**：包含 25,624 个专家核验样本，覆盖 5 个中医能力领域和 13 个子任务。
-- **LingLan-Hard**：包含 5,200 个高难度样本，每个子任务选取 400 个样本。
-- **私有临床处方评测**：包含 4,348 个脱敏脾胃病病例，用于评估处方组成与剂量一致性。原始临床数据不公开。
+- **LingLan:** 25,624 expert-verified samples spanning five TCM capability domains and 13 subtasks.
+- **LingLan-Hard:** 5,200 challenging samples, with 400 samples selected from each subtask.
+- **Private clinical prescription evaluation:** 4,348 de-identified cases involving spleen and stomach disorders, used to evaluate prescription composition and dosage agreement. The original clinical data are not publicly released.
 
-## 主要结果
+## Main Results
 
-### 综合基准表现
+### Comprehensive Benchmark Performance
 
-Lingdan-14B-R1 在 LingLan 全量集上的 Overall Score 为 **67.1**，在 LingLan-Hard 上为 **45.3**。在本文评测的外部模型中，DeepSeek-R1 的对应分数为 64.6 和 38.9。Lingdan-14B-R1 的处方生成 F1 在全量集和困难子集上分别达到 37.0 和 24.9。
+Lingdan-14B-R1 achieves an Overall Score of **67.1** on the full LingLan benchmark and **45.3** on LingLan-Hard. Among the external models evaluated in this study, DeepSeek-R1 obtains corresponding scores of 64.6 and 38.9. Lingdan-14B-R1 also achieves prescription-generation F1 scores of 37.0 on the full benchmark and 24.9 on the challenging subset.
 
-Overall Score 是 16 个主要指标的等权平均值，其中包含剂量余弦相似度，不包含剂量 MAE、precision、recall 和替代性诊疗推理汇总指标。
+The Overall Score is computed as the unweighted mean of 16 primary metrics. It includes dosage cosine similarity and excludes dosage mean absolute error (MAE), precision, recall, and alternative aggregate metrics for diagnostic-therapeutic reasoning.
 
 <p align="center">
   <img width="760" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overall_score_comparison.png" alt="Overall Score comparison on LingLan and LingLan-Hard" />
 </p>
-<p align="center"><sub>图 2. Lingdan-14B-R1 与不同规模外部模型在 LingLan 和 LingLan-Hard 上的 Overall Score 对比。</sub></p>
+<p align="center"><sub>Figure 2. Overall Score comparison between Lingdan-14B-R1 and external models of different scales on LingLan and LingLan-Hard.</sub></p>
 
-### 从 SFT 到 R1 的性能变化
+### Performance Changes from SFT to R1
 
-在主要的 14B 模型链路中，处方导向 GRPO 将 Overall Score 从 65.3 提升至 67.1，并在 LingLan-Hard 上从 41.3 提升至 45.3。处方生成 F1 在全量集上从 30.9 提升至 37.0，在困难子集上从 17.4 提升至 24.9。
+Within the primary 14B model trajectory, prescription-centered GRPO improves the Overall Score from 65.3 to 67.1 on the full LingLan benchmark and from 41.3 to 45.3 on LingLan-Hard. Prescription-generation F1 increases from 30.9 to 37.0 on the full benchmark and from 17.4 to 24.9 on the challenging subset.
 
-处方生成能力在 4B、8B 和 14B 三种规模上均表现出一致改善。相比之下，综合基准分数的变化具有模型规模和任务依赖性，因此本文将处方相关能力视为 GRPO 最直接、最稳定的改进方向。
+Prescription-generation performance improves consistently across the 4B, 8B, and 14B model scales. In contrast, changes in aggregate benchmark performance depend on model scale and task composition. We therefore regard prescription-related capabilities as the most direct and consistent area of improvement attributable to GRPO.
 
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/training_stage_performance.png" alt="Performance changes from SFT to R1 across Lingdan-V2 model scales" />
 </p>
-<p align="center"><sub>图 3. 4B、8B 和 14B 模型从 SFT 到 R1 的 Overall Score 与处方生成 F1 变化。</sub></p>
+<p align="center"><sub>Figure 3. Changes in Overall Score and prescription-generation F1 from SFT to R1 across the 4B, 8B, and 14B models.</sub></p>
 
-### 私有临床处方评测
+### Private Clinical Prescription Evaluation
 
-在 4,348 个脱敏脾胃病病例上，Lingdan-14B-R1 的 herb-level F1 为 **52.8**，剂量余弦相似度为 **50.6**，剂量 MAE 为 **4.369**。这些结果表明，在本文定义的回顾性文本评测协议下，Lingdan-14B-R1 与参考处方在药物组成及剂量结构上具有更高的一致性。
+On 4,348 de-identified cases involving spleen and stomach disorders, Lingdan-14B-R1 achieves a herb-level F1 score of **52.8**, a dosage cosine similarity of **50.6**, and a dosage MAE of **4.369**. Under the retrospective, text-based evaluation protocol defined in this study, these results indicate closer agreement with the reference prescriptions in both herbal composition and dosage structure.
 
 <p align="center">
-  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/private_prescription_recommendation.png" alt="Private spleen-stomach prescription recommendation results" />
+  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/private_prescription_recommendation.png" alt="Private prescription recommendation results for spleen and stomach disorders" />
 </p>
-<p align="center"><sub>图 4. 私有脾胃病临床处方评测中的药物组成 F1、剂量余弦相似度和剂量 MAE。</sub></p>
+<p align="center"><sub>Figure 4. Herbal composition F1, dosage cosine similarity, and dosage MAE in the private clinical prescription evaluation for spleen and stomach disorders.</sub></p>
 
-## 数据隐私与使用边界
+## Data Privacy and Responsible Use
 
-- Lingdan-V2 的训练与评测涉及公开数据和受限临床数据。私有临床数据不公开原始病例、患者标识符、病历片段或其他可能导致患者重识别的信息。
-- 私有临床评测属于回顾性、文本化的处方一致性评测，不能等同于前瞻性临床验证或真实诊疗有效性评价。
-- Lingdan-V2 仅用于科研和技术研究，不构成医疗建议，也不能替代专业医生的诊断、辨证、治疗或处方审核。
-- 处方导向 GRPO 对处方相关任务的改善最为稳定，但并不代表所有中医知识和临床任务均获得同等幅度的提升。
+- The training and evaluation of Lingdan-V2 involve both public data and restricted clinical data. The private clinical data do not disclose original cases, patient identifiers, medical record excerpts, or other information that could enable patient re-identification.
+- The private clinical evaluation is a retrospective, text-based assessment of prescription agreement. It does not constitute prospective clinical validation or evidence of effectiveness in real-world clinical practice.
+- Lingdan-V2 is intended solely for scientific and technical research. It does not provide medical advice and must not replace diagnosis, syndrome differentiation, treatment, or prescription review by qualified healthcare professionals.
+- Prescription-centered GRPO yields its most consistent improvements on prescription-related tasks. This finding does not imply uniform improvements across all TCM knowledge and clinical tasks.
 
-## 引用
+## License
 
-论文正式公开后，本节将补充完整作者信息、预印本或 DOI 地址以及 BibTeX。
+The Lingdan-V2 model weights, together with the documentation and images in this repository for which the project authors hold copyright, are released under the [Apache License 2.0](https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE). Lingdan-V2 is developed from Qwen3 open-weight models, which are also released under the Apache License 2.0.
 
-> **Lingdan-V2: Large language models for clinically grounded reasoning in traditional Chinese medicine**
+Subject to the terms of the Apache License 2.0, personal, research, and commercial use is permitted, as are copying, modification, and redistribution. Redistributions of the original or derivative versions must retain the license text and all applicable copyright, patent, trademark, and attribution notices; disclose any modifications; and preserve the project's [NOTICE](https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/NOTICE) file.
 
-## 相关链接
+The Apache License 2.0 does not relicense third-party training data, external benchmark materials, or private clinical data. These resources remain subject to their original licenses, data-use agreements, and privacy requirements. The medical safety statements above describe the intended use and associated risks of the models; they do not impose additional restrictions under the Apache License 2.0. Users are responsible for deployment decisions, regulatory compliance, and any clinical use.
+
+This section is provided only as a summary. The `LICENSE` and `NOTICE` files in this repository govern the applicable rights and obligations.
+
+## Citation
+
+If you use Lingdan-V2 in your research, please cite this project:
+
+```bibtex
+@misc{hua2026lingdanv2,
+  title  = {{Lingdan-V2}: Large Language Models for Clinically Grounded Reasoning in Traditional Chinese Medicine},
+  author = {Hua, Rui and Zhou, Xuezhong},
+  year   = {2026},
+  url    = {https://github.com/TCMAI-BJTU/Lingdan-V2}
+}
+```
+
+## Related Links
 
 - [Lingdan-V2 GitHub](https://github.com/TCMAI-BJTU/Lingdan-V2)
 - [Lingdan-V2 models on ModelScope](https://modelscope.cn/organization/TCMAIBJTU)
