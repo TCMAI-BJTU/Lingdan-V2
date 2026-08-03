@@ -89,7 +89,7 @@ The Overall Score is computed as the unweighted mean of 16 primary metrics. It i
 
 Within the primary 14B model trajectory, prescription-centered GRPO improves the Overall Score from 65.3 to 67.1 on the full LingLan benchmark and from 41.3 to 45.3 on LingLan-Hard. Prescription-generation F1 increases from 30.9 to 37.0 on the full benchmark and from 17.4 to 24.9 on the challenging subset.
 
-Prescription-generation performance improves consistently across the 4B, 8B, and 14B model scales. In contrast, changes in aggregate benchmark performance depend on model scale and task composition. We therefore regard prescription-related capabilities as the most direct and consistent area of improvement attributable to GRPO.
+Overall Score and prescription-generation F1 improve from SFT to R1 across the 4B, 8B, and 14B model scales on both LingLan and LingLan-Hard. At 8B, Overall Score increases from 63.0 to 63.7 on the full benchmark and from 36.6 to 39.1 on LingLan-Hard, while prescription-generation F1 increases from 29.8 to 34.5 and from 16.1 to 22.6, respectively. The larger gains in prescription generation indicate that the most pronounced cross-scale improvement remains concentrated in the task directly represented by the GRPO reward, while individual knowledge, extraction, reasoning, and dosage metrics do not improve uniformly.
 
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/training_stage_performance.png" alt="Performance changes from SFT to R1 across Lingdan-V2 model scales" />
