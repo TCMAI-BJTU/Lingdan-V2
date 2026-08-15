@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://modelscope.cn/organization/TCMAIBJTU"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
-  <a href="https://tcmai.chat/"><img src="https://img.shields.io/badge/Online_Demo-tcmai.chat-F28C28" alt="Lingdan-V2 online demo" /></a>
+  <a href="http://tcmai.chat/"><img src="https://img.shields.io/badge/Online_Demo-tcmai.chat-F28C28" alt="Lingdan-V2 online demo" /></a>
   <a href="https://github.com/TCMAI-BJTU/LingLan"><img src="https://img.shields.io/badge/Benchmark-LingLan-2A8F5B" alt="LingLan benchmark" /></a>
   <img src="https://img.shields.io/badge/Model_scales-4B_%7C_8B_%7C_14B-0B5394" alt="Model scales: 4B, 8B, and 14B" />
   <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
