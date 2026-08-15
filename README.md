@@ -7,21 +7,48 @@
 <p align="center">A multi-scale family of language models for TCM knowledge comprehension, clinical reasoning, and prescription recommendation</p>
 
 <p align="center">
+  <a href="http://tcmai.chat/">
+    <img src="https://img.shields.io/badge/OPEN_LINGDAN--V2_ONLINE-tcmai.chat-F28C28?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open the Lingdan-V2 online demo" />
+  </a>
+</p>
+
+<p align="center">
   <a href="https://modelscope.cn/organization/TCMAIBJTU"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
-  <a href="http://tcmai.chat/"><img src="https://img.shields.io/badge/Online_Demo-tcmai.chat-F28C28" alt="Lingdan-V2 online demo" /></a>
   <a href="https://github.com/TCMAI-BJTU/LingLan"><img src="https://img.shields.io/badge/Benchmark-LingLan-2A8F5B" alt="LingLan benchmark" /></a>
   <img src="https://img.shields.io/badge/Model_scales-4B_%7C_8B_%7C_14B-0B5394" alt="Model scales: 4B, 8B, and 14B" />
   <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
 </p>
 
-<p align="center">
-  <a href="#overview">Overview</a> ·
-  <a href="#model-zoo">Model Zoo</a> ·
-  <a href="#study-design">Study Design</a> ·
-  <a href="#main-results">Main Results</a> ·
-  <a href="#data-privacy-and-responsible-use">Responsible Use</a> ·
-  <a href="#license">License</a>
-</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <a href="#overview"><strong>01 · Overview</strong></a><br />
+      <sub>Model family and pipeline</sub>
+    </td>
+    <td align="center">
+      <a href="#model-zoo"><strong>02 · Model Zoo</strong></a><br />
+      <sub>Download all checkpoints</sub>
+    </td>
+    <td align="center">
+      <a href="#study-design"><strong>03 · Study Design</strong></a><br />
+      <sub>Training and evaluation</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <a href="#main-results"><strong>04 · Main Results</strong></a><br />
+      <sub>Benchmark performance</sub>
+    </td>
+    <td align="center">
+      <a href="#data-privacy-and-responsible-use"><strong>05 · Responsible Use</strong></a><br />
+      <sub>Privacy and clinical scope</sub>
+    </td>
+    <td align="center">
+      <a href="#license"><strong>06 · License</strong></a><br />
+      <sub>Usage and attribution</sub>
+    </td>
+  </tr>
+</table>
 
 ## Overview
 
