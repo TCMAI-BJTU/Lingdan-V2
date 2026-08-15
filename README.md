@@ -53,7 +53,7 @@ Lingdan-V2 is a family of TCM large language models developed from Qwen3 backbon
 
 Model checkpoints are currently available on ModelScope upon approval of an access request and will be made fully publicly accessible upon acceptance of the manuscript.
 
-All models are released on ModelScope. Model names follow the unified format `Lingdan-{Scale}-{Stage}`.
+<!-- All models are released on ModelScope. Model names follow the unified format `Lingdan-{Scale}-{Stage}`. -->
 
 | Model scale | Base | SFT | R1 |
 | --- | --- | --- | --- |
