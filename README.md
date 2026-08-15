@@ -78,7 +78,7 @@ All models are released on ModelScope. Model names follow the unified format `Li
 
 Lingdan-14B-R1 achieves an Overall Score of **67.1** on the full LingLan benchmark and **45.3** on LingLan-Hard. Among the external models evaluated in this study, DeepSeek-R1 obtains corresponding scores of 64.6 and 38.9. Lingdan-14B-R1 also achieves prescription-generation F1 scores of 37.0 on the full benchmark and 24.9 on the challenging subset.
 
-The Overall Score is computed as the unweighted mean of 16 primary metrics. It includes dosage cosine similarity and excludes dosage mean absolute error (MAE), precision, recall, and alternative aggregate metrics for diagnostic-therapeutic reasoning.
+The Overall Score is computed as the unweighted mean of 16 primary metrics.
 
 <p align="center">
   <img width="760" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overall_score_comparison.png" alt="Overall Score comparison on LingLan and LingLan-Hard" />
@@ -89,7 +89,7 @@ The Overall Score is computed as the unweighted mean of 16 primary metrics. It i
 
 Within the primary 14B model trajectory, prescription-centered GRPO improves the Overall Score from 65.3 to 67.1 on the full LingLan benchmark and from 41.3 to 45.3 on LingLan-Hard. Prescription-generation F1 increases from 30.9 to 37.0 on the full benchmark and from 17.4 to 24.9 on the challenging subset.
 
-Overall Score and prescription-generation F1 improve from SFT to R1 across the 4B, 8B, and 14B model scales on both LingLan and LingLan-Hard. At 8B, Overall Score increases from 63.0 to 63.7 on the full benchmark and from 36.6 to 39.1 on LingLan-Hard, while prescription-generation F1 increases from 29.8 to 34.5 and from 16.1 to 22.6, respectively. The larger gains in prescription generation indicate that the most pronounced cross-scale improvement remains concentrated in the task directly represented by the GRPO reward, while individual knowledge, extraction, reasoning, and dosage metrics do not improve uniformly.
+Overall Score and prescription-generation F1 improve from SFT to R1 across the 4B, 8B, and 14B model scales on both LingLan and LingLan-Hard. At 8B, Overall Score increases from 63.0 to 63.7 on the full benchmark and from 36.6 to 39.1 on LingLan-Hard, while prescription-generation F1 increases from 29.8 to 34.5 and from 16.1 to 22.6, respectively. The largest gains were observed in prescription generation, the task directly optimized during GRPO..
 
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/training_stage_performance.png" alt="Performance changes from SFT to R1 across Lingdan-V2 model scales" />
@@ -110,7 +110,7 @@ On 4,348 de-identified cases involving spleen and stomach disorders, Lingdan-14B
 - The training and evaluation of Lingdan-V2 involve both public data and restricted clinical data. The private clinical data do not disclose original cases, patient identifiers, medical record excerpts, or other information that could enable patient re-identification.
 - The private clinical evaluation is a retrospective, text-based assessment of prescription agreement. It does not constitute prospective clinical validation or evidence of effectiveness in real-world clinical practice.
 - Lingdan-V2 is intended solely for scientific and technical research. It does not provide medical advice and must not replace diagnosis, syndrome differentiation, treatment, or prescription review by qualified healthcare professionals.
-- Prescription-centered GRPO yields its most consistent improvements on prescription-related tasks. This finding does not imply uniform improvements across all TCM knowledge and clinical tasks.
+- Prescription-centered GRPO yields its most consistent improvements on prescription-related tasks. The effects of prescription-centered GRPO varied across task types, with the clearest gains observed in prescription-related tasks.
 
 ## License
 
@@ -128,8 +128,8 @@ If you use Lingdan-V2 in your research, please cite this project:
 
 ```bibtex
 @misc{hua2026lingdanv2,
-  title  = {{Lingdan-V2}: Large Language Models for Clinically Grounded Reasoning in Traditional Chinese Medicine},
-  author = {Hua, Rui and Zhou, Xuezhong},
+  title  = {{Lingdan-V2}: Large language models for clinically grounded reasoning in traditional Chinese medicine},
+  author = {Hua, Rui and Wei, Yu and Jin, Ziri and Sun, Zhuo and Chang, Kai and Xia, Jianan and Shu, Zixin and Li, Xiaodong and Jia, Dongmei and Dong, Fei and Zhang, Runshun and Yu, Jian and Xu, Hao and Yu, Haibin and Li, Jiansheng and Liu, Baoyan and Wang, Wenjia and Zhou, Xuezhong},
   year   = {2026},
   url    = {https://github.com/TCMAI-BJTU/Lingdan-V2}
 }
