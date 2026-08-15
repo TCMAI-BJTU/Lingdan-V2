@@ -133,6 +133,17 @@ If you use Lingdan-V2 in your research, please cite this project:
   year   = {2026},
   url    = {https://github.com/TCMAI-BJTU/Lingdan-V2}
 }
+
+@article{hua2024lingdan,
+  title={Lingdan: enhancing encoding of traditional Chinese medicine knowledge for clinical reasoning tasks with large language models},
+  author={Hua, Rui and Dong, Xin and Wei, Yu and Shu, Zixin and Yang, Pengcheng and Hu, Yunhui and Zhou, Shuiping and Sun, He and Yan, Kaijing and Yan, Xijun and others},
+  journal={Journal of the American Medical Informatics Association},
+  volume={31},
+  number={9},
+  pages={2019--2029},
+  year={2024},
+  publisher={Oxford University Press}
+}
 ```
 
 ## Related Links
