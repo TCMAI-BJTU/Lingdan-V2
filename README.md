@@ -19,36 +19,14 @@
   <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
 </p>
 
-<table align="center">
-  <tr>
-    <td align="center">
-      <a href="#overview"><strong>01 · Overview</strong></a><br />
-      <sub>Model family and pipeline</sub>
-    </td>
-    <td align="center">
-      <a href="#model-zoo"><strong>02 · Model Zoo</strong></a><br />
-      <sub>Download all checkpoints</sub>
-    </td>
-    <td align="center">
-      <a href="#study-design"><strong>03 · Study Design</strong></a><br />
-      <sub>Training and evaluation</sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <a href="#main-results"><strong>04 · Main Results</strong></a><br />
-      <sub>Benchmark performance</sub>
-    </td>
-    <td align="center">
-      <a href="#data-privacy-and-responsible-use"><strong>05 · Responsible Use</strong></a><br />
-      <sub>Privacy and clinical scope</sub>
-    </td>
-    <td align="center">
-      <a href="#license"><strong>06 · License</strong></a><br />
-      <sub>Usage and attribution</sub>
-    </td>
-  </tr>
-</table>
+## Contents
+
+1. [Overview](#overview)
+2. [Model Zoo](#model-zoo)
+3. [Study Design](#study-design)
+4. [Main Results](#main-results)
+5. [Data Privacy and Responsible Use](#data-privacy-and-responsible-use)
+6. [License](#license)
 
 ## Overview
 
