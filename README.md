@@ -107,10 +107,10 @@ On 4,348 de-identified cases involving spleen and stomach disorders, Lingdan-14B
 
 ## Data Privacy and Responsible Use
 
-- The training and evaluation of Lingdan-V2 involve both public data and restricted clinical data. The private clinical data do not disclose original cases, patient identifiers, medical record excerpts, or other information that could enable patient re-identification.
+- The training and evaluation of Lingdan-V2 involve both public data and restricted clinical data. The repository does not disclose original private clinical cases, patient identifiers, medical record excerpts, or other information that could enable patient re-identification.
 - The private clinical evaluation is a retrospective, text-based assessment of prescription agreement. It does not constitute prospective clinical validation or evidence of effectiveness in real-world clinical practice.
 - Lingdan-V2 is intended solely for scientific and technical research. It does not provide medical advice and must not replace diagnosis, syndrome differentiation, treatment, or prescription review by qualified healthcare professionals.
-- Prescription-centered GRPO yields its most consistent improvements on prescription-related tasks. The effects of prescription-centered GRPO varied across task types, with the clearest gains observed in prescription-related tasks.
+
 
 ## License
 
