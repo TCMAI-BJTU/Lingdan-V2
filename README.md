@@ -4,8 +4,6 @@
 
 <p align="center"><strong>Lingdan-V2: Large Language Models for Clinically Grounded Reasoning in Traditional Chinese Medicine</strong></p>
 
-<p align="center">A multi-scale family of language models for TCM knowledge comprehension, clinical reasoning, and prescription recommendation</p>
-
 <p align="center">
   <a href="http://tcmai.chat/">
     <img src="https://img.shields.io/badge/OPEN_LINGDAN--V2_ONLINE-tcmai.chat-F28C28?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open the Lingdan-V2 online demo" />
@@ -13,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://modelscope.cn/organization/TCMAIBJTU"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
+  <a href="https://modelscope.cn/collections/TCMAIBJTU/Lingdan-V2"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
   <a href="https://github.com/TCMAI-BJTU/LingLan"><img src="https://img.shields.io/badge/Benchmark-LingLan-2A8F5B" alt="LingLan benchmark" /></a>
   <img src="https://img.shields.io/badge/Model_scales-4B_%7C_8B_%7C_14B-0B5394" alt="Model scales: 4B, 8B, and 14B" />
   <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
@@ -23,89 +21,321 @@
 
 1. [Overview](#overview)
 2. [Model Zoo](#model-zoo)
-3. [Study Design](#study-design)
-4. [Main Results](#main-results)
-5. [Data Privacy and Responsible Use](#data-privacy-and-responsible-use)
-6. [License](#license)
+3. [Quickstart](#quickstart)
+4. [Thinking Mode](#thinking-mode)
+5. [vLLM Deployment](#vllm-deployment)
+6. [Task Prompts](#task-prompts)
+7. [Main Results](#main-results)
+8. [Data Privacy and Responsible Use](#data-privacy-and-responsible-use)
+9. [License](#license)
+10. [Citation](#citation)
+11. [Related Links](#related-links)
 
 ## Overview
 
-Clinical decision-making in traditional Chinese medicine (TCM) requires the joint integration of domain knowledge, symptom presentations, syndrome differentiation, treatment principle selection, herbal prescription composition, and dosage information. Although general-purpose large language models demonstrate strong language understanding capabilities, they remain limited in their adaptation to specialized TCM knowledge, complex diagnostic-therapeutic reasoning, and structured prescription generation.
+Lingdan-V2 is a Qwen3-based family of 4B, 8B, and 14B models for traditional Chinese medicine (TCM), covering knowledge, entity extraction, clinical reasoning, and prescription generation.
 
-Lingdan-V2 is a family of TCM large language models developed from Qwen3 backbone models at three parameter scales: 4B, 8B, and 14B. Through TCM-domain continued pretraining (CPT), reasoning-oriented supervised fine-tuning (SFT), and prescription-centered Group Relative Policy Optimization (GRPO), the models progressively acquire domain knowledge, task execution capabilities, structured reasoning, and prescription decision-making abilities. Lingdan-14B-R1 is the primary model investigated in this study, while the 4B and 8B series provide complementary evidence regarding the effects of model scale and prescription-centered post-training.
-
-| Model family | CPT corpus | SFT corpus | GRPO data | Evaluation scale |
-| --- | ---: | ---: | ---: | ---: |
-| 4B, 8B, and 14B × Base, SFT, and R1 | 16.62B tokens | 7.73M samples / 2.08B tokens | 24,212 Samples | LingLan: 25,624 items / Private clinical set: 4,348 cases |
+| Stage | Training data | Intended use |
+| --- | --- | --- |
+| Base: continued pretraining (CPT) | 16.62B tokens | Text completion and further training |
+| SFT: reasoning-oriented supervised fine-tuning | 7,729,982 samples / 2.08B tokens | TCM instruction following |
+| R1: prescription-centered GRPO | 24,212 samples | Clinical reasoning and prescription generation |
 
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overview.png" alt="Overview of Lingdan-V2 development and evaluation" />
 </p>
 <p align="center"><sub>Figure 1. Data foundation, staged training pipeline, and evaluation settings of Lingdan-V2.</sub></p>
 
-## Key Contributions
-
-- **A multi-scale family of TCM language models:** We develop Base, SFT, and R1 models at the 4B, 8B, and 14B parameter scales to support domain research, instruction-following tasks, and TCM clinical reasoning.
-- **A staged pathway for capability development:** We integrate large-scale TCM knowledge acquisition, reasoning-oriented supervised learning, and prescription-centered reinforcement post-training within a unified framework.
-- **A systematic evaluation of TCM clinical reasoning:** We evaluate TCM knowledge, information extraction, diagnostic-therapeutic reasoning, decision recognition, prescription composition, and dosage agreement on LingLan, LingLan-Hard, and a private prescription dataset for spleen and stomach disorders.
-
 ## Model Zoo
 
-Model checkpoints are currently available on ModelScope upon approval of an access request and will be made fully publicly accessible upon acceptance of the manuscript.
-
-<!-- All models are released on ModelScope. Model names follow the unified format `Lingdan-{Scale}-{Stage}`. -->
-
-| Model scale | Base | SFT | R1 |
+| Model | Training stage | Hugging Face | ModelScope |
 | --- | --- | --- | --- |
-| 4B | [Lingdan-4B-Base](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-Base) | [Lingdan-4B-SFT](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-SFT) | [Lingdan-4B-R1](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-R1) |
-| 8B | [Lingdan-8B-Base](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-Base) | [Lingdan-8B-SFT](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-SFT) | [Lingdan-8B-R1](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-R1) |
-| 14B | [Lingdan-14B-Base](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-Base) | [Lingdan-14B-SFT](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-SFT) | [Lingdan-14B-R1](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-R1) |
+| Lingdan-4B-Base | CPT | [HF](https://huggingface.co/TCMLLM/Lingdan-4B-Base) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-Base) |
+| Lingdan-4B-SFT | CPT → SFT | [HF](https://huggingface.co/TCMLLM/Lingdan-4B-SFT) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-SFT) |
+| Lingdan-4B-R1 | CPT → SFT → GRPO | [HF](https://huggingface.co/TCMLLM/Lingdan-4B-R1) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-4B-R1) |
+| Lingdan-8B-Base | CPT | [HF](https://huggingface.co/TCMLLM/Lingdan-8B-Base) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-Base) |
+| Lingdan-8B-SFT | CPT → SFT | [HF](https://huggingface.co/TCMLLM/Lingdan-8B-SFT) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-SFT) |
+| Lingdan-8B-R1 | CPT → SFT → GRPO | [HF](https://huggingface.co/TCMLLM/Lingdan-8B-R1) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-8B-R1) |
+| Lingdan-14B-Base | CPT | [HF](https://huggingface.co/TCMLLM/Lingdan-14B-Base) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-Base) |
+| Lingdan-14B-SFT | CPT → SFT | [HF](https://huggingface.co/TCMLLM/Lingdan-14B-SFT) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-SFT) |
+| Lingdan-14B-R1 | CPT → SFT → GRPO | [HF](https://huggingface.co/TCMLLM/Lingdan-14B-R1) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-R1) |
 
-- **Base:** Continued pretrained models for further fine-tuning and domain-specific research.
-- **SFT:** Models obtained by supervised fine-tuning of the Base checkpoints for TCM question answering, information extraction, and general diagnostic and therapeutic instruction-following tasks.
-- **R1:** Models aligned from the SFT checkpoints through prescription-centered GRPO, with an emphasis on structured clinical reasoning and prescription recommendation.
+## Quickstart
 
-## Study Design
+Example: Lingdan-14B-R1. Change the model ID for other SFT/R1 checkpoints; Base model cards provide text-completion examples. Use Transformers ≥4.51.0; see the [Qwen3 quickstart](https://qwen.readthedocs.io/en/stable/getting_started/quickstart.html).
 
-### Data Foundation and Staged Training
+```bash
+pip install -U torch transformers accelerate
+```
 
-1. **Continued pretraining (CPT):** Lingdan-Base models are trained on 16.62B tokens of TCM and clinically relevant text, including clinical data, classical and modern TCM literature, structured knowledge, public medical data, and general-domain corpora.
-2. **Supervised fine-tuning (SFT):** Lingdan-SFT models are trained on 7,729,982 samples comprising 2.08B tokens. The tasks include TCM question answering, information extraction, diagnostic-therapeutic reasoning, clinical cases, and prescription generation.
-3. **Prescription-centered GRPO:** Lingdan-R1 models are trained on 24,212 Samples, with prescription composition agreement serving as the primary optimization objective.
+```python
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
-### Evaluation Settings
+model_name = "TCMLLM/Lingdan-14B-R1"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    torch_dtype="auto",
+    device_map="auto",
+).eval()
 
-- **LingLan:** 25,624 expert-verified samples spanning five TCM capability domains and 13 subtasks.
-- **LingLan-Hard:** 5,200 challenging samples, with 400 samples selected from each subtask.
-- **Private clinical prescription evaluation:** 4,348 de-identified cases involving spleen and stomach disorders, used to evaluate prescription composition and dosage agreement. The original clinical data are not publicly released.
+messages = [{"role": "user", "content": "请简要介绍中医辨证论治的基本概念。"}]
+text = tokenizer.apply_chat_template(
+    messages,
+    tokenize=False,
+    add_generation_prompt=True,
+    enable_thinking=True,
+)
+inputs = tokenizer([text], return_tensors="pt").to(model.device)
+outputs = model.generate(
+    **inputs,
+    max_new_tokens=8192,
+    eos_token_id=[151645, 151643],  # <|im_end|> and <|endoftext|>
+    do_sample=True,
+    temperature=0.6,
+    top_p=0.95,
+    top_k=20,
+)
+new_tokens = outputs[0, inputs.input_ids.shape[1]:]
+print(tokenizer.decode(new_tokens, skip_special_tokens=True))
+```
+
+For ModelScope, install `modelscope` and replace the import and model ID:
+
+```python
+from modelscope import AutoModelForCausalLM, AutoTokenizer
+model_name = "TCMAIBJTU/Lingdan-14B-R1"
+```
+
+The explicit EOS IDs stop generation at either the chat-turn or text terminator.
+
+## Thinking Mode
+
+The quickstart enables thinking with `enable_thinking=True`. Set it to `False` for direct answers. The released chat templates support this switch.
+
+| Mode | `enable_thinking` | Temperature | Top-p | Top-k |
+| --- | --- | ---: | ---: | ---: |
+| Thinking | `True` | 0.6 | 0.95 | 20 |
+| Non-thinking | `False` | 0.7 | 0.8 | 20 |
+
+These are Qwen3 inference starting settings; behavior after fine-tuning may vary. Prefer the explicit switch over the unverified `/think` and `/no_think` soft instructions. Separate direct-generation output as follows:
+
+```python
+raw_output = tokenizer.decode(new_tokens, skip_special_tokens=True)
+reasoning_part, delimiter, final_answer = raw_output.partition("</think>")
+if delimiter:
+    thinking_content = reasoning_part.removeprefix("<think>").strip()
+    final_answer = final_answer.strip()
+else:
+    thinking_content = ""
+    final_answer = raw_output.strip()
+print("Thinking:", thinking_content)
+print("Answer:", final_answer)
+```
+
+If generation hits the token limit before the thinking block closes, increase the budget and retry; the answer is incomplete.
+
+## vLLM Deployment
+
+Install vLLM in a GPU environment with compatible CUDA/PyTorch; see the [Qwen3 vLLM guide](https://qwen.readthedocs.io/en/stable/deployment/vllm.html).
+
+```bash
+pip install -U "vllm>=0.9.0" openai
+pip install -U modelscope
+```
+
+### Start the Server
+
+**Hugging Face:**
+
+```bash
+export VLLM_USE_MODELSCOPE=false
+vllm serve TCMLLM/Lingdan-14B-R1 \
+  --served-model-name Lingdan-14B-R1 \
+  --host 127.0.0.1 \
+  --port 8000 \
+  --max-model-len 16384 \
+  --reasoning-parser qwen3
+```
+
+**ModelScope:**
+
+```bash
+export VLLM_USE_MODELSCOPE=true
+vllm serve TCMAIBJTU/Lingdan-14B-R1 \
+  --served-model-name Lingdan-14B-R1 \
+  --host 127.0.0.1 \
+  --port 8000 \
+  --max-model-len 16384 \
+  --reasoning-parser qwen3
+```
+
+Replace the repository ID with a local model directory to reuse downloaded files. For two GPUs, append `--tensor-parallel-size 2`. Adjust the 16,384-token context limit (input + output) to available GPU memory.
+
+### Chat Client
+
+```python
+from openai import OpenAI
+
+client = OpenAI(base_url="http://127.0.0.1:8000/v1", api_key="EMPTY")
+response = client.chat.completions.create(
+    model="Lingdan-14B-R1",
+    messages=[{"role": "user", "content": "请简要介绍中医辨证论治的基本概念。"}],
+    temperature=0.6,
+    top_p=0.95,
+    max_tokens=8192,
+    extra_body={
+        "top_k": 20,
+        "chat_template_kwargs": {"enable_thinking": True},
+        "stop_token_ids": [151645, 151643],
+    },
+)
+message = response.choices[0].message
+thinking_content = (
+    getattr(message, "reasoning", None)
+    or getattr(message, "reasoning_content", None)
+    or ""
+)
+print("Thinking:", thinking_content)
+print("Answer:", message.content)
+print("Finish reason:", response.choices[0].finish_reason)
+```
+
+`chat_template_kwargs` selects thinking mode; `--reasoning-parser qwen3` separates its output. To disable thinking, use the non-thinking settings above. The client supports both `reasoning` and the older `reasoning_content` field ([vLLM reference](https://docs.vllm.ai/en/latest/features/reasoning_outputs/)). Parse task JSON from `message.content`; `finish_reason="length"` indicates truncation.
+
+`EMPTY` is a placeholder for the local server started without API-key authentication.
+
+## Task Prompts
+
+For SFT/R1 models, fill the placeholders in these LingLan evaluation templates and pass the text as the user message.
+
+### Clinical-record Entity Extraction
+
+Source: [LingLan `ner_clinic.py`](https://github.com/TCMAI-BJTU/LingLan/blob/main/simple-evals/evals/tcm_evals/ner_clinic.py).
+
+````text
+请从以下病历文本中抽取指定类型的实体。
+
+注意：
+1. 请先仔细分析文本内容，思考每个实体类型的识别要点，然后再输出结果
+2. 如果某个实体类型在文本中没有对应实体，请返回空列表[]
+3. 如果同一个实体在文本中出现多次，请在列表中按顺序重复出现
+
+文本：
+{text}
+
+需要抽取的实体类型：
+{entity_types}
+
+请按照以下JSON格式输出结果，每个实体类型对应一个列表，如果文本中某个实体出现多次，请在列表中重复出现：
+
+```json
+{
+  "实体类型1": ["实体1", "实体2", ...],
+  "实体类型2": ["实体1", "实体2", ...],
+  ...
+}
+```
+````
+
+### Classical-text Entity Extraction
+
+Source: [LingLan `ner_ancient.py`](https://github.com/TCMAI-BJTU/LingLan/blob/main/simple-evals/evals/tcm_evals/ner_ancient.py).
+
+````text
+请从以下古籍文本中抽取指定类型的实体。
+
+注意：
+1. 请先仔细分析古籍文本内容，思考古文语言特点和各实体类型的识别要点，然后再输出结果
+2. 如果某个实体类型在文本中没有对应实体，请返回空列表[]
+3. 如果同一个实体在文本中出现多次，请在列表中按顺序重复出现
+
+文本：
+{text}
+
+需要抽取的实体类型：
+{entity_types}
+
+请按照以下JSON格式输出结果，每个实体类型对应一个列表，如果文本中某个实体出现多次，请在列表中重复出现：
+
+```json
+{
+  "实体类型1": ["实体1", "实体2", ...],
+  "实体类型2": ["实体1", "实体2", ...],
+  ...
+}
+```
+````
+
+### Joint Syndrome, Treatment, and Prescription Generation
+
+Source: [LingLan `pres_diag_eval.py`](https://github.com/TCMAI-BJTU/LingLan/blob/main/simple-evals/evals/tcm_evals/pres_diag_eval.py).
+
+````text
+请根据以下病历文本，进行完整的中医诊疗分析，包括辨证、治法和处方。
+
+注意：
+1. 请仔细分析患者的症状表现、舌脉象等信息
+2. 辨证：给出准确的中医证型判断（如有多个，用逗号分隔）
+3. 治法：根据辨证结果确定相应的治疗方法（如有多个，用逗号分隔）
+4. 处方：开具具体的中药处方，格式为"药名: 剂量, 药名: 剂量"
+
+病历文本：
+{medical_record}
+
+请按照以下JSON格式输出结果：
+
+```json
+{
+  "辨证": "证型1, 证型2, ...",
+  "治法": "治法1, 治法2, ...",
+  "处方": "药名1: 剂量1, 药名2: 剂量2, 药名3: 剂量3, ..."
+}
+```
+````
+
+Use the dataset’s exact entity labels. JSON examples contain illustrative ellipses; actual output must be valid JSON. In joint generation, `辨证`, `治法`, and `处方` are strings; format prescription items as `药名: 数值g`. Extract task JSON from the final answer using the output handling above.
 
 ## Main Results
 
-### Comprehensive Benchmark Performance
+Results transcribed from the paper. Full: LingLan (25,620 items); Hard: LingLan-Hard (5,200 items). Overall Score averages 16 primary metrics, excluding dose MAE. All scores use a 0–100 scale except MAE (lower is better). The paper uses zero-shot Chinese prompts, temperature 0.6, and at most 8,192 generated tokens; reproduction also requires the same data and scoring pipeline. The private evaluation uses 4,348 de-identified spleen/stomach disorder cases.
 
-Lingdan-14B-R1 achieves an Overall Score of **67.1** on the full LingLan benchmark and **45.3** on LingLan-Hard. Among the external models evaluated in this study, DeepSeek-R1 obtains corresponding scores of 64.6 and 38.9. Lingdan-14B-R1 also achieves prescription-generation F1 scores of 37.0 on the full benchmark and 24.9 on the challenging subset.
+### Results by Checkpoint
 
-The Overall Score is computed as the unweighted mean of 16 primary metrics.
+| Model | Overall Full | Overall Hard | Prescription F1 Full | Prescription F1 Hard | Private herb F1 | Private dose cosine | Private dose MAE ↓ |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Lingdan-4B-SFT | 63.1 | 37.6 | 30.1 | 17.5 | 33.7 | 34.1 | 5.787 |
+| Lingdan-4B-R1 | 63.4 | 40.4 | 36.2 | 24.8 | 52.7 | 49.5 | 5.062 |
+| Lingdan-8B-SFT | 63.0 | 36.6 | 29.8 | 16.1 | 34.2 | 34.2 | 5.812 |
+| Lingdan-8B-R1 | 63.7 | 39.1 | 34.5 | 22.6 | 50.7 | 49.5 | 6.006 |
+| Lingdan-14B-SFT | 65.3 | 41.3 | 30.9 | 17.4 | 35.1 | 34.8 | 5.840 |
+| Lingdan-14B-R1 | 67.1 | 45.3 | 37.0 | 24.9 | 52.8 | 50.6 | 4.369 |
+
+GRPO improves Overall Score and prescription F1 at all three scales. Dose MAE does not improve uniformly: it increases at 8B.
+
+### Entity Extraction and Joint Generation (R1)
+
+Each cell is **Full / Hard**, using the paper’s primary generation/extraction F1 metrics.
+
+| Model | Clinical-record entities F1 | Classical-text entities F1 | Syndrome generation F1 | Treatment generation F1 | Prescription generation F1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Lingdan-4B-R1 | 70.5 / 58.4 | 58.5 / 42.5 | 9.5 / 1.6 | 13.9 / 2.4 | 36.2 / 24.8 |
+| Lingdan-8B-R1 | 75.3 / 64.6 | 54.6 / 37.0 | 9.5 / 2.5 | 14.3 / 3.0 | 34.5 / 22.6 |
+| Lingdan-14B-R1 | 69.6 / 55.5 | 62.6 / 45.6 | 12.1 / 2.4 | 15.5 / 2.1 | 37.0 / 24.9 |
+
+### Comparisons
+
+Lingdan-14B-R1 exceeds the strongest external model evaluated, DeepSeek-R1, by 2.5 Overall Score points on Full and 6.4 on Hard.
 
 <p align="center">
   <img width="760" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overall_score_comparison.png" alt="Overall Score comparison on LingLan and LingLan-Hard" />
 </p>
 <p align="center"><sub>Figure 2. Overall Score comparison between Lingdan-14B-R1 and external models of different scales on LingLan and LingLan-Hard.</sub></p>
 
-### Performance Changes from SFT to R1
-
-Within the primary 14B model trajectory, prescription-centered GRPO improves the Overall Score from 65.3 to 67.1 on the full LingLan benchmark and from 41.3 to 45.3 on LingLan-Hard. Prescription-generation F1 increases from 30.9 to 37.0 on the full benchmark and from 17.4 to 24.9 on the challenging subset.
-
-Overall Score and prescription-generation F1 improve from SFT to R1 across the 4B, 8B, and 14B model scales on both LingLan and LingLan-Hard. At 8B, Overall Score increases from 63.0 to 63.7 on the full benchmark and from 36.6 to 39.1 on LingLan-Hard, while prescription-generation F1 increases from 29.8 to 34.5 and from 16.1 to 22.6, respectively. The largest gains were observed in prescription generation, the task directly optimized during GRPO..
-
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/training_stage_performance.png" alt="Performance changes from SFT to R1 across Lingdan-V2 model scales" />
 </p>
 <p align="center"><sub>Figure 3. Changes in Overall Score and prescription-generation F1 from SFT to R1 across the 4B, 8B, and 14B models.</sub></p>
-
-### Private Clinical Prescription Evaluation
-
-On 4,348 de-identified cases involving spleen and stomach disorders, Lingdan-14B-R1 achieves a herb-level F1 score of **52.8**, a dosage cosine similarity of **50.6**, and a dosage MAE of **4.369**. Under the retrospective, text-based evaluation protocol defined in this study, these results indicate closer agreement with the reference prescriptions in both herbal composition and dosage structure.
 
 <p align="center">
   <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/private_prescription_recommendation.png" alt="Private prescription recommendation results for spleen and stomach disorders" />
@@ -114,24 +344,15 @@ On 4,348 de-identified cases involving spleen and stomach disorders, Lingdan-14B
 
 ## Data Privacy and Responsible Use
 
-- The training and evaluation of Lingdan-V2 involve both public data and restricted clinical data. The repository does not disclose original private clinical cases, patient identifiers, medical record excerpts, or other information that could enable patient re-identification.
-- The private clinical evaluation is a retrospective, text-based assessment of prescription agreement. It does not constitute prospective clinical validation or evidence of effectiveness in real-world clinical practice.
-- Lingdan-V2 is intended solely for scientific and technical research. It does not provide medical advice and must not replace diagnosis, syndrome differentiation, treatment, or prescription review by qualified healthcare professionals.
-
+Lingdan-V2 is for research and does not replace qualified clinical judgment. Private clinical data are not released. Retrospective prescription agreement is not evidence of clinical safety or effectiveness; use de-identified inputs and professional review for any clinical application.
 
 ## License
 
-The Lingdan-V2 model weights, together with the documentation and images in this repository for which the project authors hold copyright, are released under the [Apache License 2.0](https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE). Lingdan-V2 is developed from Qwen3 open-weight models, which are also released under the Apache License 2.0.
-
-Subject to the terms of the Apache License 2.0, personal, research, and commercial use is permitted, as are copying, modification, and redistribution. Redistributions of the original or derivative versions must retain the license text and all applicable copyright, patent, trademark, and attribution notices; disclose any modifications; and preserve the project's [NOTICE](https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/NOTICE) file.
-
-The Apache License 2.0 does not relicense third-party training data, external benchmark materials, or private clinical data. These resources remain subject to their original licenses, data-use agreements, and privacy requirements. The medical safety statements above describe the intended use and associated risks of the models; they do not impose additional restrictions under the Apache License 2.0. Users are responsible for deployment decisions, regulatory compliance, and any clinical use.
-
-This section is provided only as a summary. The `LICENSE` and `NOTICE` files in this repository govern the applicable rights and obligations.
+Lingdan-V2 model weights and project-owned documentation and images are released under the [Apache License 2.0](https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE). See [NOTICE](https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/NOTICE) for attribution notices. Third-party data and materials remain subject to their original terms.
 
 ## Citation
 
-If you use Lingdan-V2 in your research, please cite this project:
+Cite Lingdan-V2 and the earlier Lingdan work:
 
 ```bibtex
 @misc{hua2026lingdanv2,
@@ -155,6 +376,4 @@ If you use Lingdan-V2 in your research, please cite this project:
 
 ## Related Links
 
-- [Lingdan-V2 GitHub](https://github.com/TCMAI-BJTU/Lingdan-V2)
-- [Lingdan-V2 models on ModelScope](https://modelscope.cn/organization/TCMAIBJTU)
-- [LingLan benchmark](https://github.com/TCMAI-BJTU/LingLan)
+[GitHub](https://github.com/TCMAI-BJTU/Lingdan-V2) · [Hugging Face collection](https://huggingface.co/collections/TCMLLM/lingdan-v2) · [ModelScope collection](https://modelscope.cn/collections/TCMAIBJTU/Lingdan-V2) · [LingLan benchmark](https://github.com/TCMAI-BJTU/LingLan)
