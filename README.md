@@ -11,25 +11,14 @@
 </p>
 
 <p align="center">
+  <a href="https://huggingface.co/collections/TCMLLM/lingdan-v2"><img src="https://img.shields.io/badge/Models-Hugging_Face-FFD21E?logo=huggingface&logoColor=black" alt="Hugging Face models" /></a>
   <a href="https://modelscope.cn/collections/TCMAIBJTU/Lingdan-V2"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
   <a href="https://github.com/TCMAI-BJTU/LingLan"><img src="https://img.shields.io/badge/Benchmark-LingLan-2A8F5B" alt="LingLan benchmark" /></a>
   <img src="https://img.shields.io/badge/Model_scales-4B_%7C_8B_%7C_14B-0B5394" alt="Model scales: 4B, 8B, and 14B" />
   <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
 </p>
 
-## Contents
-
-1. [Overview](#overview)
-2. [Model Zoo](#model-zoo)
-3. [Quickstart](#quickstart)
-4. [Thinking Mode](#thinking-mode)
-5. [vLLM Deployment](#vllm-deployment)
-6. [Task Prompts](#task-prompts)
-7. [Main Results](#main-results)
-8. [Data Privacy and Responsible Use](#data-privacy-and-responsible-use)
-9. [License](#license)
-10. [Citation](#citation)
-11. [Related Links](#related-links)
+[Models](#model-zoo) · [Results](#main-results) · [Quickstart](#quickstart) · [vLLM](#vllm-deployment) · [Prompts](#task-prompts) · [Citation](#citation)
 
 ## Overview
 
@@ -59,6 +48,75 @@ Lingdan-V2 is a Qwen3-based family of 4B, 8B, and 14B models for traditional Chi
 | Lingdan-14B-Base | CPT | [HF](https://huggingface.co/TCMLLM/Lingdan-14B-Base) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-Base) |
 | Lingdan-14B-SFT | CPT → SFT | [HF](https://huggingface.co/TCMLLM/Lingdan-14B-SFT) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-SFT) |
 | Lingdan-14B-R1 | CPT → SFT → GRPO | [HF](https://huggingface.co/TCMLLM/Lingdan-14B-R1) | [MS](https://modelscope.cn/models/TCMAIBJTU/Lingdan-14B-R1) |
+
+## Main Results
+
+Results transcribed from the paper. Full: LingLan (25,620 items); Hard: LingLan-Hard (5,200 items). Overall Score averages 16 primary metrics, excluding dose MAE. All scores use a 0–100 scale except MAE (lower is better). The paper uses zero-shot Chinese prompts, temperature 0.6, and at most 8,192 generated tokens; reproduction also requires the same data and scoring pipeline. The private evaluation uses 4,348 de-identified spleen/stomach disorder cases.
+
+### Overall Comparison
+
+Lingdan-14B-R1 exceeds the strongest external model evaluated, DeepSeek-R1, by 2.5 Overall Score points on Full and 6.4 on Hard.
+
+<p align="center">
+  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overall_score_comparison.png" alt="Overall Score comparison on LingLan and LingLan-Hard" />
+</p>
+<p align="center"><sub>Figure 2. Overall Score comparison between Lingdan-14B-R1 and external models of different scales on LingLan and LingLan-Hard.</sub></p>
+
+### Benchmark Results
+
+Each cell is **Full / Hard**.
+
+| Model | Overall ↑ | Prescription F1 ↑ |
+| --- | ---: | ---: |
+| Lingdan-4B-SFT | 63.1 / 37.6 | 30.1 / 17.5 |
+| Lingdan-4B-R1 | 63.4 / 40.4 | 36.2 / 24.8 |
+| Lingdan-8B-SFT | 63.0 / 36.6 | 29.8 / 16.1 |
+| Lingdan-8B-R1 | 63.7 / 39.1 | 34.5 / 22.6 |
+| Lingdan-14B-SFT | 65.3 / 41.3 | 30.9 / 17.4 |
+| Lingdan-14B-R1 | 67.1 / 45.3 | 37.0 / 24.9 |
+
+GRPO improves both metrics at all three scales.
+
+<p align="center">
+  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/training_stage_performance.png" alt="Performance changes from SFT to R1 across Lingdan-V2 model scales" />
+</p>
+<p align="center"><sub>Figure 3. Changes in Overall Score and prescription-generation F1 from SFT to R1 across the 4B, 8B, and 14B models.</sub></p>
+
+### Private Clinical Evaluation
+
+| Model | Herb F1 ↑ | Dose cosine ↑ | Dose MAE ↓ |
+| --- | ---: | ---: | ---: |
+| Lingdan-4B-SFT | 33.7 | 34.1 | 5.787 |
+| Lingdan-4B-R1 | 52.7 | 49.5 | 5.062 |
+| Lingdan-8B-SFT | 34.2 | 34.2 | 5.812 |
+| Lingdan-8B-R1 | 50.7 | 49.5 | 6.006 |
+| Lingdan-14B-SFT | 35.1 | 34.8 | 5.840 |
+| Lingdan-14B-R1 | 52.8 | 50.6 | 4.369 |
+
+Dose MAE does not improve uniformly: it increases at 8B.
+
+<p align="center">
+  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/private_prescription_recommendation.png" alt="Private prescription recommendation results for spleen and stomach disorders" />
+</p>
+<p align="center"><sub>Figure 4. Herbal composition F1, dosage cosine similarity, and dosage MAE in the private clinical prescription evaluation for spleen and stomach disorders.</sub></p>
+
+### Entity Extraction (R1)
+
+Each cell is **Full / Hard**, using the paper’s primary F1 metrics.
+
+| Model | Clinical records | Classical texts |
+| --- | ---: | ---: |
+| Lingdan-4B-R1 | 70.5 / 58.4 | 58.5 / 42.5 |
+| Lingdan-8B-R1 | 75.3 / 64.6 | 54.6 / 37.0 |
+| Lingdan-14B-R1 | 69.6 / 55.5 | 62.6 / 45.6 |
+
+### Joint Generation (R1)
+
+| Model | Syndrome F1 | Treatment F1 | Prescription F1 |
+| --- | ---: | ---: | ---: |
+| Lingdan-4B-R1 | 9.5 / 1.6 | 13.9 / 2.4 | 36.2 / 24.8 |
+| Lingdan-8B-R1 | 9.5 / 2.5 | 14.3 / 3.0 | 34.5 / 22.6 |
+| Lingdan-14B-R1 | 12.1 / 2.4 | 15.5 / 2.1 | 37.0 / 24.9 |
 
 ## Quickstart
 
@@ -295,52 +353,6 @@ Source: [LingLan `pres_diag_eval.py`](https://github.com/TCMAI-BJTU/LingLan/blob
 ````
 
 Use the dataset’s exact entity labels. JSON examples contain illustrative ellipses; actual output must be valid JSON. In joint generation, `辨证`, `治法`, and `处方` are strings; format prescription items as `药名: 数值g`. Extract task JSON from the final answer using the output handling above.
-
-## Main Results
-
-Results transcribed from the paper. Full: LingLan (25,620 items); Hard: LingLan-Hard (5,200 items). Overall Score averages 16 primary metrics, excluding dose MAE. All scores use a 0–100 scale except MAE (lower is better). The paper uses zero-shot Chinese prompts, temperature 0.6, and at most 8,192 generated tokens; reproduction also requires the same data and scoring pipeline. The private evaluation uses 4,348 de-identified spleen/stomach disorder cases.
-
-### Results by Checkpoint
-
-| Model | Overall Full | Overall Hard | Prescription F1 Full | Prescription F1 Hard | Private herb F1 | Private dose cosine | Private dose MAE ↓ |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Lingdan-4B-SFT | 63.1 | 37.6 | 30.1 | 17.5 | 33.7 | 34.1 | 5.787 |
-| Lingdan-4B-R1 | 63.4 | 40.4 | 36.2 | 24.8 | 52.7 | 49.5 | 5.062 |
-| Lingdan-8B-SFT | 63.0 | 36.6 | 29.8 | 16.1 | 34.2 | 34.2 | 5.812 |
-| Lingdan-8B-R1 | 63.7 | 39.1 | 34.5 | 22.6 | 50.7 | 49.5 | 6.006 |
-| Lingdan-14B-SFT | 65.3 | 41.3 | 30.9 | 17.4 | 35.1 | 34.8 | 5.840 |
-| Lingdan-14B-R1 | 67.1 | 45.3 | 37.0 | 24.9 | 52.8 | 50.6 | 4.369 |
-
-GRPO improves Overall Score and prescription F1 at all three scales. Dose MAE does not improve uniformly: it increases at 8B.
-
-### Entity Extraction and Joint Generation (R1)
-
-Each cell is **Full / Hard**, using the paper’s primary generation/extraction F1 metrics.
-
-| Model | Clinical-record entities F1 | Classical-text entities F1 | Syndrome generation F1 | Treatment generation F1 | Prescription generation F1 |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Lingdan-4B-R1 | 70.5 / 58.4 | 58.5 / 42.5 | 9.5 / 1.6 | 13.9 / 2.4 | 36.2 / 24.8 |
-| Lingdan-8B-R1 | 75.3 / 64.6 | 54.6 / 37.0 | 9.5 / 2.5 | 14.3 / 3.0 | 34.5 / 22.6 |
-| Lingdan-14B-R1 | 69.6 / 55.5 | 62.6 / 45.6 | 12.1 / 2.4 | 15.5 / 2.1 | 37.0 / 24.9 |
-
-### Comparisons
-
-Lingdan-14B-R1 exceeds the strongest external model evaluated, DeepSeek-R1, by 2.5 Overall Score points on Full and 6.4 on Hard.
-
-<p align="center">
-  <img width="760" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/overall_score_comparison.png" alt="Overall Score comparison on LingLan and LingLan-Hard" />
-</p>
-<p align="center"><sub>Figure 2. Overall Score comparison between Lingdan-14B-R1 and external models of different scales on LingLan and LingLan-Hard.</sub></p>
-
-<p align="center">
-  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/training_stage_performance.png" alt="Performance changes from SFT to R1 across Lingdan-V2 model scales" />
-</p>
-<p align="center"><sub>Figure 3. Changes in Overall Score and prescription-generation F1 from SFT to R1 across the 4B, 8B, and 14B models.</sub></p>
-
-<p align="center">
-  <img width="100%" src="https://raw.githubusercontent.com/TCMAI-BJTU/Lingdan-V2/main/assets/private_prescription_recommendation.png" alt="Private prescription recommendation results for spleen and stomach disorders" />
-</p>
-<p align="center"><sub>Figure 4. Herbal composition F1, dosage cosine similarity, and dosage MAE in the private clinical prescription evaluation for spleen and stomach disorders.</sub></p>
 
 ## Data Privacy and Responsible Use
 
