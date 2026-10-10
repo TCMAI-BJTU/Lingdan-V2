@@ -146,23 +146,11 @@ pip install -U modelscope
 
 ### Start the Server
 
-**Hugging Face:**
-
 ```bash
+# Hugging Face: use false and the TCMLLM model ID below.
+# ModelScope: change false to true and TCMLLM/ to TCMAIBJTU/.
 export VLLM_USE_MODELSCOPE=false
 vllm serve TCMLLM/Lingdan-14B-R1 \
-  --served-model-name Lingdan-14B-R1 \
-  --host 127.0.0.1 \
-  --port 8000 \
-  --max-model-len 16384 \
-  --reasoning-parser qwen3
-```
-
-**ModelScope:**
-
-```bash
-export VLLM_USE_MODELSCOPE=true
-vllm serve TCMAIBJTU/Lingdan-14B-R1 \
   --served-model-name Lingdan-14B-R1 \
   --host 127.0.0.1 \
   --port 8000 \
