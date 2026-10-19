@@ -5,8 +5,8 @@
 <p align="center"><strong>Lingdan-V2: Large Language Models for Clinically Grounded Reasoning in Traditional Chinese Medicine</strong></p>
 
 <p align="center">
-  <a href="http://tcmai.chat/">
-    <img src="https://img.shields.io/badge/OPEN_LINGDAN--V2_ONLINE-tcmai.chat-F28C28?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open the Lingdan-V2 online demo" />
+  <a href="https://lingdan.chat/">
+    <img src="https://img.shields.io/badge/OPEN_LINGDAN--V2_ONLINE-lingdan.chat-F28C28?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Open the Lingdan-V2 online demo" />
   </a>
 </p>
 
