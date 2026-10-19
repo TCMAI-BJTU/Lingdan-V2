@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2610.14705"><img src="https://img.shields.io/badge/arXiv-2610.14705-B31B1B?logo=arxiv&logoColor=white" alt="Lingdan-V2 paper on arXiv" /></a>
   <a href="https://huggingface.co/collections/TCMLLM/lingdan-v2"><img src="https://img.shields.io/badge/Models-Hugging_Face-FFD21E?logo=huggingface&logoColor=black" alt="Hugging Face models" /></a>
   <a href="https://modelscope.cn/collections/TCMAIBJTU/Lingdan-V2"><img src="https://img.shields.io/badge/Models-ModelScope-624AFF" alt="ModelScope models" /></a>
   <a href="https://github.com/TCMAI-BJTU/LingLan"><img src="https://img.shields.io/badge/Benchmark-LingLan-2A8F5B" alt="LingLan benchmark" /></a>
@@ -18,7 +19,7 @@
   <a href="https://github.com/TCMAI-BJTU/Lingdan-V2/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache--2.0-D22128" alt="Apache License 2.0" /></a>
 </p>
 
-[Models](#model-zoo) · [Results](#main-results) · [Quickstart](#quickstart) · [vLLM](#vllm-deployment) · [Prompts](#task-prompts) · [Citation](#citation)
+[Paper](https://arxiv.org/abs/2610.14705) · [Models](#model-zoo) · [Results](#main-results) · [Quickstart](#quickstart) · [vLLM](#vllm-deployment) · [Prompts](#task-prompts) · [Citation](#citation)
 
 ## Overview
 
@@ -51,7 +52,7 @@ Lingdan-V2 is a Qwen3-based family of 4B, 8B, and 14B models for traditional Chi
 
 ## Main Results
 
-Results transcribed from the paper. Full: LingLan (25,620 items); Hard: LingLan-Hard (5,200 items). Overall Score averages 16 primary metrics, excluding dose MAE. All scores use a 0–100 scale except MAE (lower is better). The paper uses zero-shot Chinese prompts, temperature 0.6, and at most 8,192 generated tokens; reproduction also requires the same data and scoring pipeline. The private evaluation uses 4,348 de-identified spleen/stomach disorder cases.
+Results reported in [Lingdan-V2 (arXiv:2610.14705v1)](https://arxiv.org/abs/2610.14705v1). Full: LingLan (25,620 items); Hard: LingLan-Hard (5,200 items). Overall Score averages 16 primary metrics, excluding dose MAE. All scores use a 0–100 scale except MAE (lower is better). The paper uses zero-shot Chinese prompts, temperature 0.6, and at most 8,192 generated tokens; reproduction also requires the same data and scoring pipeline. The private evaluation uses 4,348 de-identified spleen/stomach disorder cases.
 
 ### Overall Comparison
 
@@ -364,14 +365,17 @@ Lingdan-V2 model weights and project-owned documentation and images are released
 
 ## Citation
 
-Cite Lingdan-V2 and the earlier Lingdan work:
+Please cite Lingdan-V2 and the earlier Lingdan work:
 
 ```bibtex
 @misc{hua2026lingdanv2,
   title  = {{Lingdan-V2}: Large language models for clinically grounded reasoning in traditional Chinese medicine},
   author = {Hua, Rui and Wei, Yu and Jin, Ziri and Sun, Zhuo and Chang, Kai and Xia, Jianan and Shu, Zixin and Li, Xiaodong and Jia, Dongmei and Dong, Fei and Zhang, Runshun and Yu, Jian and Xu, Hao and Yu, Haibin and Li, Jiansheng and Liu, Baoyan and Wang, Wenjia and Zhou, Xuezhong},
   year   = {2026},
-  url    = {https://github.com/TCMAI-BJTU/Lingdan-V2}
+  eprint = {2610.14705},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url    = {https://arxiv.org/abs/2610.14705}
 }
 
 @article{hua2024lingdan,
@@ -388,4 +392,4 @@ Cite Lingdan-V2 and the earlier Lingdan work:
 
 ## Related Links
 
-[GitHub](https://github.com/TCMAI-BJTU/Lingdan-V2) · [Hugging Face collection](https://huggingface.co/collections/TCMLLM/lingdan-v2) · [ModelScope collection](https://modelscope.cn/collections/TCMAIBJTU/Lingdan-V2) · [LingLan benchmark](https://github.com/TCMAI-BJTU/LingLan)
+[Paper](https://arxiv.org/abs/2610.14705) · [GitHub](https://github.com/TCMAI-BJTU/Lingdan-V2) · [Hugging Face collection](https://huggingface.co/collections/TCMLLM/lingdan-v2) · [ModelScope collection](https://modelscope.cn/collections/TCMAIBJTU/Lingdan-V2) · [LingLan benchmark](https://github.com/TCMAI-BJTU/LingLan)
