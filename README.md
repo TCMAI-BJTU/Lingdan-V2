@@ -270,7 +270,7 @@ For SFT/R1 models, fill the placeholders in these LingLan evaluation templates a
 
 ### Clinical-record Entity Extraction
 
-Source: [LingLan `ner_clinic.py`](https://github.com/TCMAI-BJTU/LingLan/blob/main/simple-evals/evals/tcm_evals/ner_clinic.py).
+Source: [LingLan `ner_clinic.py`](https://github.com/TCMAI-BJTU/LingLan/blob/master/simple-evals/evals/tcm_evals/ner_clinic.py).
 
 ````text
 请从以下病历文本中抽取指定类型的实体。
@@ -299,7 +299,7 @@ Source: [LingLan `ner_clinic.py`](https://github.com/TCMAI-BJTU/LingLan/blob/mai
 
 ### Classical-text Entity Extraction
 
-Source: [LingLan `ner_ancient.py`](https://github.com/TCMAI-BJTU/LingLan/blob/main/simple-evals/evals/tcm_evals/ner_ancient.py).
+Source: [LingLan `ner_ancient.py`](https://github.com/TCMAI-BJTU/LingLan/blob/master/simple-evals/evals/tcm_evals/ner_ancient.py).
 
 ````text
 请从以下古籍文本中抽取指定类型的实体。
@@ -328,7 +328,7 @@ Source: [LingLan `ner_ancient.py`](https://github.com/TCMAI-BJTU/LingLan/blob/ma
 
 ### Joint Syndrome, Treatment, and Prescription Generation
 
-Source: [LingLan `pres_diag_eval.py`](https://github.com/TCMAI-BJTU/LingLan/blob/main/simple-evals/evals/tcm_evals/pres_diag_eval.py).
+Source: [LingLan `pres_diag_eval.py`](https://github.com/TCMAI-BJTU/LingLan/blob/master/simple-evals/evals/tcm_evals/pres_diag_eval.py).
 
 ````text
 请根据以下病历文本，进行完整的中医诊疗分析，包括辨证、治法和处方。
